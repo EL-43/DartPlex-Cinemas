@@ -1,0 +1,122 @@
+body {
+  background: linear-gradient(135deg, rgba(33, 136, 55, 0.623) 0%, #ffffffc2 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+.navbar-custom {
+  position: sticky;  
+  top: 0;           
+  z-index: 1000;   
+  background-color: rgba(255, 253, 253, 0.671);
+}
+
+.cinema {
+  font-size: 30px;
+  margin-right: 60px;
+  color: rgb(252, 158, 18);
+  text-decoration: none;
+}
+
+.location-badge {
+  background-color: rgba(255, 253, 253, 0.74);
+  border: 1px solid #dee2e6;
+  font-weight: bold;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.loginbutton {
+  transition: transform 0.3s ease-in-out;
+  color: black;
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+
+.loginbutton:hover {
+  transform: scale(1.2);
+  color: rgb(0, 101, 99);
+}
+
+.signupbutton {
+  transition: transform 0.3s ease-in-out;
+  color: white;
+  background: rgb(0, 153, 145);
+  text-decoration: none;
+  padding: 10px 24px; 
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+.badge-safe {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #222;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.badge-format {
+  background-color: #f8f9fa;
+  color: #000;
+  border: 1px solid #ddd;
+}
+
+.breadcrumb a {
+  color: inherit;         
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: none;
+}
+
+#bioskop-list > div {
+  border: none !important;       
+  background: rgba(255, 255, 255, 0.377); 
+  border-radius: 10px;                 
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+#bioskop-list > div:hover {
+  transform: scale(1.02);               
+}
+
+/* Styling untuk daftar film */
+#film-list > div {
+  border: none !important;           
+  background: rgba(255, 255, 255, 0.377);  
+  border-radius: 12px;                  
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  transition: transform 0.2s ease;
+}
+
+#film-list > div:hover {
+  transform: scale(1.02);                 
+}
+
+#film-list img {
+  border-radius: 8px;                    
+  width: 90px;
+  height: auto;
+  object-fit: cover;
+}
+

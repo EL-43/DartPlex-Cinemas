@@ -1,0 +1,129 @@
+body {
+  background: linear-gradient(135deg, rgba(33, 136, 55, 0.623) 0%, #ffffffc2 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+.navbar-custom {
+  position: sticky;  
+  top: 0;           
+  z-index: 1000;   
+  background-color: rgba(255, 253, 253, 0.671);
+}
+
+.cinema {
+  font-size: 30px;
+  margin-right: 60px;
+  color: rgb(252, 158, 18);
+  text-decoration: none;
+}
+
+
+.location-badge {
+  background-color: rgba(255, 253, 253, 0.74);
+  border: 1px solid #dee2e6;
+  font-weight: bold;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.loginbutton {
+  transition: transform 0.3s ease-in-out;
+  color: black;
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+
+.loginbutton:hover {
+  transform: scale(1.2);
+  color: rgb(0, 101, 99);
+}
+
+.signupbutton {
+  transition: transform 0.3s ease-in-out;
+  color: white;
+  background: rgb(0, 153, 145);
+  text-decoration: none;
+  padding: 10px 24px; 
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+.search-container {
+  max-width: 600px;
+}
+
+.search-input {
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.category-icons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.category-icons a {
+  text-decoration: none;
+  color: #333;
+}
+
+.category-item {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.category-item:hover {
+  transform: translateY(-5px);
+}
+
+.promo-card {
+  min-width: 350px;
+  height: 200px;
+  border-radius: 15px;
+  overflow: hidden;         
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;         
+  padding: 0;                
+}
+
+.promo-card img.promo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.promo-card-1 {
+  background: linear-gradient(135deg, #8B0000 0%, #FF4500 100%);
+}
+
+.promo-card-2 {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+}
+
+.promo-card-3 {
+  background: linear-gradient(135deg, #8E44AD 0%, #3498DB 100%);
+}
+
+.promo-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.promo-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
