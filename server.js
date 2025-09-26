@@ -82,7 +82,10 @@ const server = http.createServer((req, res) =>{
                     res.writeHead(200, {'content-type' : 'application/json'});
                     res.end(JSON.stringify({
                         success: true,
-                        message: 'Login Berhasil!'
+                        message: 'Login Berhasil!',
+                        username: user.username,
+                        email: user.email,
+                        role: user.role
                     }));
                 } else{
                     res.writeHead(401, {'content-type' : 'application/json'});
@@ -96,7 +99,7 @@ const server = http.createServer((req, res) =>{
                 res.writeHead(500, {'content-type' : 'application/json'});
                 res.end(JSON.stringify({
                     success: false,
-                    message: 'Server Gagal!' // cek user.json
+                    message: 'Server Gagal!' 
                 }));
             }
         });
@@ -105,68 +108,67 @@ const server = http.createServer((req, res) =>{
     }
     //signup
     else if (pathname === '/api/signup' && req.method === 'POST') {
-    parseBody(req, (body) => {
-        const {username, email, password} = body;
+        parseBody(req, (body) => {
+            const {username, email, password} = body;
 
-        if(!username || !email || !password){
+            if(!username || !email || !password){
                 res.writeHead(400, {'content-type' : 'application/json'});
                 res.end(JSON.stringify({
                     success: false,
                     message: 'Semua bagian wajib diisi!'
                 }));
                 return;
-        }
+            }
 
+            try {
+                const filePath = path.join(__dirname, 'Database', 'user.json');
+                let users = [];
 
-        try {
-            const filePath = path.join(__dirname, 'Database', 'user.json');
-            let users = [];
-
-            if (fs.existsSync(filePath)) {
-                const data = fs.readFileSync(filePath, 'utf-8');
-                if (data.trim().length > 0) {
-                    users = JSON.parse(data);
+                if (fs.existsSync(filePath)) {
+                    const data = fs.readFileSync(filePath, 'utf-8');
+                    if (data.trim().length > 0) {
+                        users = JSON.parse(data);
+                    }
                 }
-            }
 
-            // cek duplikasi username
-            if (users.find(u => u.username === username)) {
-                res.writeHead(409, { 'content-type': 'application/json' });
+                // cek duplikasi username
+                if (users.find(u => u.username === username)) {
+                    res.writeHead(409, { 'content-type': 'application/json' });
+                    res.end(JSON.stringify({
+                        success: false,
+                        message: 'Username sudah terdaftar!'
+                    }));
+                    return;
+                }
+
+                // cek duplikasi email
+                if (users.find(u => u.email === email)) {
+                    res.writeHead(409, { 'content-type': 'application/json' });
+                    res.end(JSON.stringify({
+                        success: false,
+                        message: 'Email sudah terdaftar!'
+                    }));
+                    return;
+                }
+
+                users.push({ username, email, password, role: "user" });
+                fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
+
+                res.writeHead(201, { 'content-type': 'application/json' });
+                res.end(JSON.stringify({
+                    success: true,
+                    message: 'Pendaftaran Berhasil!',
+                    username,
+                    role: "user"
+                }));
+            } catch (err) {
+                console.log('Terjadi kesalahan saat menulis user.json:', err);
+                res.writeHead(500, { 'content-type': 'application/json' });
                 res.end(JSON.stringify({
                     success: false,
-                    message: 'Username sudah terdaftar!'
+                    message: 'Server Gagal!'
                 }));
-                return;
             }
-
-            // cek duplikasi email
-            if (users.find(u => u.email === email)) {
-                res.writeHead(409, { 'content-type': 'application/json' });
-                res.end(JSON.stringify({
-                    success: false,
-                    message: 'Email sudah terdaftar!'
-                }));
-                return;
-            }
-
-
-            // tambahkan user baru
-            users.push({ username, email, password });
-            fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
-
-            res.writeHead(201, { 'content-type': 'application/json' });
-            res.end(JSON.stringify({
-                success: true,
-                message: 'Pendaftaran Berhasil!'
-            }));
-        } catch (err) {
-            console.log('Terjadi kesalahan saat menulis user.json:', err);
-            res.writeHead(500, { 'content-type': 'application/json' });
-            res.end(JSON.stringify({
-                success: false,
-                message: 'Server Gagal!'
-            }));
-        }
     });
 
     return;

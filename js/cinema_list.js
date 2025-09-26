@@ -7,7 +7,37 @@ const filmList = document.getElementById("film-list");
 let cinemasData = {};   // cinemas.json
 let filmsData = {};     // films.json
 
-// untouchable -> JANGAN DI OTAK ATIK
+// Auth handling
+document.addEventListener("DOMContentLoaded", () => {
+  const authButtons = document.querySelector(".auth-buttons");
+
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const savedUsername = localStorage.getItem("savedUsername") || localStorage.getItem("currentUsername") || "User";
+
+  if (isLoggedIn && authButtons) {
+    authButtons.innerHTML = `
+      <div class="dropdown">
+        <a class="btn btn-outline-secondary dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user me-1"></i> ${savedUsername}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          <li><a class="dropdown-item" href="#" id="signOutBtn"><i class="fas fa-right-from-bracket me-2"></i>Sign out</a></li>
+        </ul>
+      </div>
+    `;
+
+    // Sign out handler
+    document.querySelector('#signOutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("savedUsername");
+      localStorage.removeItem("savedEmail");
+      window.location.reload();
+    });
+  }
+});
+
+// untouchable
 function normalizePosterPath(posterPath) {
   if (!posterPath) return "";
   return posterPath.replace(/^(\.\.\/)+/, "");
@@ -26,7 +56,7 @@ async function renderBioskopList() {
     if (!filmResponse.ok) throw new Error(`Gagal memuat data film: ${filmResponse.status}`);
     filmsData = await filmResponse.json();
 
-    // film --> id
+    // film -> id
     const filmMap = {};
     filmsData.forEach(film => {
       filmMap[film.id] = film;
@@ -115,8 +145,23 @@ function showDetail(cinemaId, filmMap) {
       </div>
     `;
 
+    // Klik film -> cek login
     card.addEventListener("click", () => {
-      window.location.href = `/movie?film=${encodeURIComponent(fKey)}`;
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const targetUrl = `/movie?film=${encodeURIComponent(fKey)}`;
+
+      if (isLoggedIn) {
+        window.location.href = targetUrl;
+      } else {
+        const choice = confirm(`Kamu belum login.\n\nPunya akun? Klik OK untuk login, Cancel untuk daftar.`);
+        if (choice) {
+          localStorage.setItem("redirectAfterLogin", targetUrl);
+          window.location.href = `/login?redirect=${encodeURIComponent(targetUrl)}`;
+        } else {
+          localStorage.setItem("redirectAfterLogin", targetUrl);
+          window.location.href = `/signup?redirect=${encodeURIComponent(targetUrl)}`;
+        }
+      }
     });
 
     filmList.appendChild(card);
@@ -135,3 +180,25 @@ document.getElementById("back-to-list")?.addEventListener("click", (e) => {
 
 document.querySelector('#section-bioskop .berandatitle a')?.setAttribute('href', '/');
 document.addEventListener('DOMContentLoaded', renderBioskopList);
+
+// Redirect
+document.addEventListener("DOMContentLoaded", () => {
+  const loginLink = document.querySelector(".auth-buttons a[href='/login']");
+  const signupLink = document.querySelector(".auth-buttons a[href='/signup']");
+
+  if (loginLink) {
+    loginLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
+    });
+  }
+
+  if (signupLink) {
+    signupLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      window.location.href = `/signup?redirect=${encodeURIComponent(window.location.pathname)}`;
+    });
+  }
+});

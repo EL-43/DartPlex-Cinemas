@@ -58,8 +58,25 @@
         <p id="film-synopsis"></p>
 
         <div class="d-flex gap-3">
-          <a id="film-trailer" class="btn btn-trailer rounded-pill px-4" target="_blank" rel="noopener noreferrer">Lihat trailer</a>
+          <a id="film-trailer" class="btn btn-trailer rounded-pill px-4">Lihat Trailer</a>
           <button id="lihat-jadwal" class="btn btn-outline-dark rounded-pill px-4">Lihat Jadwal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trailer Modal -->
+    <div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+          <div class="modal-body p-0">
+            <div class="ratio ratio-16x9">
+              <iframe id="trailerFrame" src="" title="YouTube trailer"
+                allowfullscreen allow="autoplay"></iframe>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
         </div>
       </div>
     </div>
