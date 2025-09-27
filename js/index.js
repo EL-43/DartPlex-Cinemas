@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const trailerFrame = document.getElementById("trailerFrame");
   const authButtons = document.querySelector(".auth-buttons");
   const editMoviesBtn = document.getElementById("editMoviesBtn");
+
   let films = [];
 
   // Auth handling
@@ -18,6 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // edit movies button invisible by default
   if (editMoviesBtn) {
     editMoviesBtn.style.display = "none";
+  }
+  // assign
+  const assignBtn = document.getElementById('assignScheduleBtn');
+  if (isLoggedIn && isAdmin && assignBtn) {
+    assignBtn.style.display = 'block';
   }
 
   if (isLoggedIn && authButtons) {

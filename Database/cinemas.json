@@ -2,21 +2,35 @@
   "SigidMall": {
     "name": "Borgor Dartplex",
     "info": "059 Ambaville, SigidMall, Borgor Dartplex",
-    "films": ["drifting-home", "given-movie", "chainsaw-man"]
+    "films": [
+      "drifting-home",
+      "given-movie",
+      "chainsaw-man",
+      "kisah-si-hitam"
+    ]
   },
   "ParamountMall": {
     "name": "Gading Paramount Dartplex",
     "info": "J997 Medang Kamulan, Paramount Mall, Gading Paramount Dartplex",
-    "films": ["chainsaw-man", "given-movie"]
+    "films": [
+      "chainsaw-man",
+      "given-movie"
+    ]
   },
   "MulyaMall": {
     "name": "Sunda Islands DartPlex",
     "info": "101 Aingka, Mulya Mall, Sunda Islands DartPlex",
-    "films": ["drifting-home", "chainsaw-man"]
+    "films": [
+      "drifting-home",
+      "chainsaw-man"
+    ]
   },
   "GrandMall": {
     "name": "Batavia DartPlex",
     "info": "011 Prime Outer Plaza, Grand Mall, Batavia DartPlex",
-    "films": ["chainsaw-man", "given-movie"]
+    "films": [
+      "chainsaw-man",
+      "given-movie"
+    ]
   }
 }

@@ -1,3 +1,12 @@
+function titleToId(title){
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // semua abjad
+    .replace(/\s+/g, '-') // spasi jadi (-)
+    .replace(/-+/g, '-') // lebih dari 1 (-)
+    .replace(/^-+|-+$/g, ''); // awalan (-)
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const movieListContainer = document.getElementById('movie-list');
   const loadingMessage = document.getElementById('loading-message');
@@ -12,6 +21,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const authButtons = document.querySelector(".auth-buttons");
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const savedUsername = localStorage.getItem("savedUsername") || localStorage.getItem("currentUsername") || "User";
+  // Role
+  const currentRole = localStorage.getItem("currentRole") || "guest";
+  console.log("DEBUG >> currentRole:", currentRole);
 
   if (isLoggedIn && authButtons) {
     authButtons.innerHTML = `
@@ -27,16 +39,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.querySelector('#signOutBtn').addEventListener('click', (e) => {
       e.preventDefault();
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("savedUsername");
-      localStorage.removeItem("savedEmail");
-      window.location.reload();
+      localStorage.clear();
+      window.location.href = '/index';
     });
   }
-
-  // Role
-  const currentRole = localStorage.getItem("currentRole") || "guest";
-  console.log("DEBUG >> currentRole:", currentRole);
 
   // Render Movies
   function renderMovies() {
@@ -110,72 +116,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     errorMessage.classList.add('d-none');
 
     try {
-      const localFilms = localStorage.getItem('films');
-      if (localFilms) {
-        films = JSON.parse(localFilms);
-      } else {
-        const response = await fetch('/films.json');
-        if (!response.ok) throw new Error(`Error Status: ${response.status}`);
-        films = await response.json();
-        localStorage.setItem('films', JSON.stringify(films));
+      const response = await fetch('/api/films');
+      if(!response.ok){
+        throw new Error(`HTTP Error: ${response.status}`);
       }
+      films = await response.json();
       renderMovies();
     } catch (error) {
-      console.error('Error loading films:', error);
+      console.error('Error API:', error);
       errorMessage.classList.remove('d-none');
     } finally {
       loadingMessage.classList.add('d-none');
     }
   }
 
+  // cek dulu -- ntar aku remove
   function saveMovies() {
     localStorage.setItem('films', JSON.stringify(films));
     renderMovies();
   }
 
   // Form Handler
-  movieForm.addEventListener('submit', (e) => {
+  movieForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const id = document.getElementById('movie-id').value;
-    const title = document.getElementById('title').value;
-    const genre = document.getElementById('genre').value;
+    const id = document.getElementById('movie-id').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const genre = document.getElementById('genre').value.trim();
     const rating = document.getElementById('rating').value;
-    const poster = document.getElementById('poster').value;
-    const description = document.getElementById('description').value;
+    const poster = document.getElementById('poster').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const duration = document.getElementById('duration')?.value.trim() || "120m";
+    const format = document.getElementById('format')?.value.trim() || "2D";
+    const trailer = document.getElementById('trailer')?.value.trim() || "#";
 
-    if (id) {
-      const index = films.findIndex(f => f.id == id);
-      if (index > -1) {
-        films[index] = { 
-          ...films[index], 
-          title, 
-          genre, 
-          rating, 
-          poster, 
-          description 
-        };
-      }
-    } else {
-      const newMovie = {
-        id: Date.now(),
-        title,
-        genre,
-        rating,
-        poster,
-        description,
-        duration: "120m",
-        format: "2D",
-        trailer: "#"
-      };
-      films.push(newMovie);
+    if(!title || !poster || !description){
+      alert('Semua Bagian Wajib di Isi!');
+      return;
     }
 
-    saveMovies();
-    movieModal.hide();
-    movieForm.reset();
-    document.getElementById('movie-id').value = '';
-    movieModalLabel.textContent = 'Tambah Film';
+    let finalId = id;
+    if(!finalId){
+      finalId = titleToId(title);
+      let counter = 1;
+
+      let uniqueId = finalId;
+      while(films.some(f => f.id === uniqueId)){
+        uniqueId = `${finalId}-${counter}`;
+        counter++;
+      }
+      finalId = uniqueId;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append('id', finalId);
+    formData.append('title', title);
+    formData.append('genre', genre);
+    formData.append('rating', rating);
+    formData.append('poster', poster);
+    formData.append('description', description);
+    formData.append('duration', duration);
+    formData.append('format', format);
+    formData.append('trailer', trailer);
+
+    try{
+      const response = await fetch('/api/films', {
+        method : 'POST',
+        headers : {'content-type' : 'application/x-www-form-urlencoded'},
+        body : formData
+      });
+
+      const result = await response.json();
+
+      if(result.success){
+        alert('Film berhasil disimpan!');
+        movieModal.hide();
+        movieForm.reset();
+        document.getElementById('movie-id').value = '';
+        movieModalLabel.textContent = 'Tambah Film';
+        loadMovies(); // reload
+      } else{
+        alert('Terjadi Kesalahan,' + result.message);
+      }
+    } catch(err){
+      console.error('Error: ', err);
+      alert('Terjadi Kesalahan saat Menyimpan!')
+    }
   });
 
   function editMovie(id) {
@@ -185,20 +211,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('movie-id').value = movie.id;
     document.getElementById('title').value = movie.title;
     document.getElementById('genre').value = movie.genre || '';
-    document.getElementById('rating').value = movie.rating;
+    document.getElementById('rating').value = movie.rating || 'SU';
     document.getElementById('poster').value = movie.poster;
     document.getElementById('description').value = movie.description || '';
+    document.getElementById('duration').value = movie.duration || '120m';
+    document.getElementById('format').value = movie.format || '2D';
+    document.getElementById('trailer').value = movie.trailer || '#';
 
     movieModalLabel.textContent = 'Edit Film';
     movieModal.show();
   }
 
   function deleteMovie(id) {
-    if (confirm('Yakin mau hapus film ini?')) {
-      films = films.filter(f => f.id != id);
-      saveMovies();
-    }
+  if (!id) return;
+
+  if (confirm(`Yakin ingin menghapus film ini?\nID: ${id}`)) {
+    fetch(`/api/films/${encodeURIComponent(id)}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        alert('Film berhasil dihapus!');
+        loadMovies(); // refresh daftar
+      } else {
+        alert('Error: ' + result.message);
+      }
+    })
+    .catch(err => {
+      console.error('Error: ', err);
+      alert('Terjadi kesalahan saat menghapus film!');
+    });
   }
+}
 
   // Button Tambah Film
   const addMovieBtn = document.getElementById('add-movie-btn');

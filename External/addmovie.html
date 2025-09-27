@@ -6,7 +6,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/addmovie.css">
-  <title>Movies | DartPlex</title>
+  <link rel="icon" href="/images/dartplexlogo.png" type="image/png">
+  <title>Admin | DartPlex</title>
 </head>
 <body>
 
@@ -89,6 +90,21 @@
             <div class="mb-3">
               <label for="description" class="form-label">Deskripsi</label>
               <textarea id="description" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="duration" class="form-label">Durasi</label>
+              <input type="text" id="duration" class="form-control" placeholder="Contoh: 120m">
+            </div>
+
+            <div class="mb-3">
+              <label for="format" class="form-label">Format</label>
+              <input type="text" id="format" class="form-control" placeholder="Contoh: 2D, 3D, IMAX">
+            </div>
+
+            <div class="mb-3">
+              <label for="trailer" class="form-label">Trailer (URL YouTube)</label>
+              <input type="url" id="trailer" class="form-control" placeholder="https://youtu.be/...">
             </div>
           </div>
           

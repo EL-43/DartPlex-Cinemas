@@ -31,5 +31,16 @@
     "format": "2D",
     "trailer": "https://youtu.be/GJ1jrCnm-t8",
     "description": "Denji, seorang remaja yang kini menjadi Chainsaw Man, mulai menemukan secercah kebahagiaan setelah bertemu Reze, seorang gadis ramah yang bekerja di kafe. Kehangatan dan perhatian Reze membuat Denji merasakan arti cinta untuk pertama kalinya, meski ia masih terikat oleh perasaan terhadap Makima. Namun, di balik senyum manisnya, Reze menyimpan rahasia berbahaya yang mengguncang hidup Denji. Ketika kenyataan itu terungkap, Denji terjebak antara cinta yang ia dambakan dan pertempuran mematikan yang menanti, menuntutnya untuk memilih antara perasaan pribadi atau takdirnya sebagai Chainsaw Man."
+  },
+  {
+    "id": "kisah-si-hitam",
+    "title": "Kisah si Hitam",
+    "genre": "horror",
+    "rating": "D17+",
+    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNy-bsYVpkCYu6He_DZVHO_OpVLBEwCU1SLg&s",
+    "description": "Lorem Ipsum",
+    "duration": "200m",
+    "format": "IMAX",
+    "trailer": "https://www.youtube.com/watch?v=u8XmnoqSmyw&list=RDu8XmnoqSmyw&start_radio=1&pp=oAcB"
   }
 ]

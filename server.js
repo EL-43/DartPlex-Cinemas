@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const querystring = require('querystring');
+const { json } = require('stream/consumers');
 const localPort = 3000; // port localhost
 
 // helper, khusus baca file
@@ -172,10 +173,253 @@ const server = http.createServer((req, res) =>{
     });
 
     return;
-    } else if(pathname === '/films.json'){
+    } 
+    // api film
+    else if(pathname === '/api/films'){
+        if(req.method === 'GET'){
+            const filmPath = path.join(__dirname, 'Database', 'films.json');
+            fs.readFile(filmPath, 'utf-8', (err, data) =>{
+                if(err){
+                    console.log('Error: ', err);
+                    res.writeHead(500, {'content-type' : 'application/json'});
+                    return res.end(JSON.stringify({error: 'Film Tidak Berhasil di Masukkan!'}))
+                }
+                let films = [];
+                if(data.trim()){
+                    try{
+                        films = JSON.parse(data);
+                    } catch(e){
+                        console.log('Error: ', e);
+                    }
+                    res.writeHead(200, {'content-type' : 'application/json'});
+                    res.end(JSON.stringify(films));
+                }
+            })
+        } else if(req.method === 'POST'){
+            parseBody(req, (body) =>{
+                try{
+                    const filmPath = path.join(__dirname, 'Database', 'films.json');
+                    let films = [];
+                    // cek dan jalankan klo emang ada aja
+                    if(fs.existsSync(filmPath)){
+                        const data = fs.readFileSync(filmPath, 'utf-8');
+                        if(data.trim()){
+                            films = JSON.parse(data);
+                        }
+                    }
+                    // properti film
+                    const {
+                        id,
+                        title,
+                        genre,
+                        rating,
+                        poster,
+                        description,
+                        duration = "120m", // set default
+                        format = "2D", // set default
+                        trailer = "#" // tanpa trailer
+                    } = body;
+
+                    if(!title || !poster || !description){
+                        res.writeHead(400, {'content-type' : 'application/json'});
+                        return res.end(JSON.stringify({
+                            success: false, 
+                            message: "Semua Field Wajib di Isi!"
+                        }));
+                    }
+
+                    if (!id || typeof id !== 'string' || id.trim() === '') {
+                        res.writeHead(400, { 'content-type': 'application/json' });
+                        return res.end(JSON.stringify({
+                            success: false,
+                            message: "ID film tidak valid!"
+                        }));
+                    }
+
+                    const cleanId = id.trim();
+
+                    const index = films.findIndex(f => f.id === cleanId);
+                    if (index >= 0) {
+                        // Update
+                        films[index] = {
+                            id: cleanId,
+                            title,
+                            genre: genre || '',
+                            rating: rating || 'SU',
+                            poster,
+                            description,
+                            duration,
+                            format,
+                            trailer
+                        };
+                    } else {
+                        // Tambah baru
+                        films.push({
+                            id: cleanId,
+                            title,
+                            genre: genre || '',
+                            rating: rating || 'SU',
+                            poster,
+                            description,
+                            duration,
+                            format,
+                            trailer
+                        });
+                    }
+                    fs.writeFileSync(filmPath, JSON.stringify(films, null, 2), 'utf-8');
+
+                    res.writeHead(200, {'content-type' : 'application/json'});
+                    res.end(JSON.stringify({
+                        success: true,
+                        message: "Film Berhasil di Simpan!"
+                    }))
+                } catch(err){
+                    console.error('Error: ', err);
+                    res.writeHead(500, {'content-type' : 'application/json'});
+                    res.end(JSON.stringify({
+                        success: false,
+                        message: "Terjadi Kesalahan!"
+                    }))
+                }
+            })
+            return;
+        }
+    }
+    // delete film 
+    else if(pathname.startsWith('/api/films') && req.method === 'DELETE'){
+        const id = pathname.replace('/api/films/', '');
+
+        if(!id || id === 'undefined'){
+            res.writeHead(400, {'content-type' : 'application/json'});
+            return res.end(JSON.stringify({
+                success: false,
+                message: 'ID Film tidak valid!'
+            }))
+        }
+
+        try{
+            const filmPath = path.join(__dirname, 'Database', 'films.json');
+            let films = [];
+
+            if(fs.existsSync(filmPath)){
+                const data = fs.readFileSync(filmPath, 'utf-8');
+                if(data.trim()){
+                    films = JSON.parse(data);
+                }
+            }
+
+            const initialLength = films.length;
+            films = films.filter(film => film.id !== id);
+
+            if(films.length === initialLength){
+                res.writeHead(404, {'content-type' : 'application/json'});
+                return res.end(JSON.stringify({
+                    success: false,
+                    message: 'Film tidak ditemukan!'
+                }))
+            }
+
+            fs.writeFileSync(filmPath, JSON.stringify(films, null, 2), 'utf-8');
+
+            res.writeHead(200, { 'content-type': 'application/json' });
+            res.end(JSON.stringify({
+                success: true,
+                message: 'Film berhasil dihapus!'
+            }))
+        } catch(err){
+            console.error('Error: ', err);
+            res.writeHead(500, { 'content-type': 'application/json' });
+            res.end(JSON.stringify({
+                success: false,
+                message: 'Film tidak terhapus!'
+            }))
+        }
+        return;
+    }
+    // API Cinema
+    else if(pathname === '/api/cinemas' && req.method === 'GET'){
+        const cinemaPath = path.join(__dirname, 'Database', 'cinemas.json');
+        fs.readFile(cinemaPath, 'utf-8', (err, data) => {
+            if (err) {
+                console.error('Gagal baca cinemas.json:', err);
+                res.writeHead(500, { 'content-type': 'application/json' });
+                return res.end(JSON.stringify({ 
+                    error: 'Gagal memuat data bioskop' 
+                }))
+            }
+            let cinemas = {};
+            if(data.trim()){
+                try{
+                    cinemas = JSON.parse(data);
+                } catch(err){
+                    console.error('Error: ', err);
+                }
+            }
+            res.writeHead(200, {'content-type' : 'application/json'});
+            res.end(JSON.stringify(cinemas));
+        })
+    }
+    else if(pathname === '/api/cinemas' && req.method === 'POST'){
+        parseBody(req, (body) =>{
+            try{
+                const {cinemaId, filmIds} = body;
+                if (!cinemaId || !filmIds) {
+                    res.writeHead(400, { 'content-type': 'application/json' });
+                    return res.end(JSON.stringify({ 
+                        success: false, 
+                        message: 'Data tidak lengkap' 
+                  }));
+                }
+
+                const cinemaPath = path.join(__dirname, 'Database', 'cinemas.json');
+                let cinemas = {};
+
+                if(fs.existsSync(cinemaPath)){
+                    const data = fs.readFileSync(cinemaPath, 'utf-8');
+                    if(data.trim()){
+                        cinemas = JSON.parse(data);
+                    }
+                }
+
+                if (!cinemas[cinemaId]) {
+                    res.writeHead(404, { 'content-type': 'application/json' });
+                    return res.end(JSON.stringify({ 
+                        success: false, 
+                        message: 'Bioskop tidak ditemukan' 
+                    }))
+                }
+
+                let filmsArray = [];
+                if(typeof filmIds === 'string'){
+                    filmsArray = filmIds ? filmIds.split(',') : [];
+                } else if(Array.isArray(filmIds)){
+                    filmsArray = filmIds;
+                }
+
+                cinemas[cinemaId].films = filmsArray;
+                
+                fs.writeFileSync(cinemaPath, JSON.stringify(cinemas, null, 2), 'utf-8');
+                res.writeHead(200, {'content-type' : 'application/json'});
+                res.end(JSON.stringify({
+                    success: true,
+                    message: 'Berhasil diperbarui!'
+                }))
+            } catch(err){
+                console.error('Error: ', err);
+                res.writeHead(500, {'content-type' : 'application/json'});
+                res.end(JSON.stringify({
+                    success: false,
+                    message: 'Gagal diperbarui!'
+                }))
+            }
+        })
+    }
+    else if(pathname === '/films.json'){
         sendFile(res, path.join(__dirname, 'Database', 'films.json'), 'application/json');
     } else if(pathname === '/cinemas.json'){
         sendFile(res, path.join(__dirname, 'Database', 'cinemas.json'), 'application/json');
+    } else if (pathname === '/assign') {
+    sendFile(res, path.join(__dirname, 'External', 'assign.html'));
     } else if(pathname === '/jadwal.json'){
         sendFile(res, path.join(__dirname, 'Database', 'jadwal.json'), 'application/json');
     }
