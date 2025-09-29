@@ -6,6 +6,17 @@ const querystring = require('querystring');
 const { json } = require('stream/consumers');
 const localPort = 3000; // port localhost
 
+// Database models
+const sequelize = require('./db');
+const Film = require('./models/Film');
+const User = require('./models/User');
+const Cinema = require('./models/Cinema');
+const CinemaFilm = require('./models/CinemaFilm');
+const Schedule = require('./models/Schedule');
+
+Cinema.belongsToMany(Film, { through: CinemaFilm, foreignKey: 'cinemaId' });
+Film.belongsToMany(Cinema, { through: CinemaFilm, foreignKey: 'filmId' });
+
 // helper, khusus baca file
 function sendFile(res, filePath, contentType = 'text/html'){
     fs.readFile(filePath, (err, content) =>{
@@ -38,7 +49,7 @@ function parseBody(req, callback){
 }
 
 //add to pathname
-const server = http.createServer((req, res) =>{
+const server = http.createServer(async (req, res) =>{
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
     const pathname = parsedUrl.pathname;
 
@@ -57,10 +68,10 @@ const server = http.createServer((req, res) =>{
     } else if(pathname === '/addmovie'){
         sendFile(res, path.join(__dirname, 'External', 'addmovie.html'));
     }
-     
+
     // login
     else if(pathname === '/api/login' && req.method === 'POST'){
-        parseBody(req, (body) => {
+        parseBody(req, async (body) => {
             const {username, email, password} = body;
 
             if(!username || !email || !password){
@@ -73,11 +84,11 @@ const server = http.createServer((req, res) =>{
             }
 
             try{
-                const data = fs.readFileSync(path.join(__dirname, 'Database', 'user.json'), 'utf-8');
-                const users = JSON.parse(data)
+                // Database query menggunakan Sequelize
+                const user = await User.findOne({
+                    where: { username, email, password }
+                });
 
-                const user = users.find(u => u.username === username && u.email === email && u.password === password);
-               
                 // if found
                 if(user){
                     res.writeHead(200, {'content-type' : 'application/json'});
@@ -96,7 +107,7 @@ const server = http.createServer((req, res) =>{
                     }));
                 }
             } catch(err){
-                console.log('Terjadi kesalahan saat membaca user.json:', err);
+                console.log('Terjadi kesalahan saat membaca database:', err);
                 res.writeHead(500, {'content-type' : 'application/json'});
                 res.end(JSON.stringify({
                     success: false,
@@ -109,7 +120,7 @@ const server = http.createServer((req, res) =>{
     }
     //signup
     else if (pathname === '/api/signup' && req.method === 'POST') {
-        parseBody(req, (body) => {
+        parseBody(req, async (body) => {
             const {username, email, password} = body;
 
             if(!username || !email || !password){
@@ -122,38 +133,34 @@ const server = http.createServer((req, res) =>{
             }
 
             try {
-                const filePath = path.join(__dirname, 'Database', 'user.json');
-                let users = [];
-
-                if (fs.existsSync(filePath)) {
-                    const data = fs.readFileSync(filePath, 'utf-8');
-                    if (data.trim().length > 0) {
-                        users = JSON.parse(data);
-                    }
-                }
-
+                // Database query menggunakan Sequelize
                 // cek duplikasi username
-                if (users.find(u => u.username === username)) {
+                const existingUsername = await User.findOne({ where: { username } });
+                if (existingUsername) {
                     res.writeHead(409, { 'content-type': 'application/json' });
-                    res.end(JSON.stringify({
+                    return res.end(JSON.stringify({
                         success: false,
                         message: 'Username sudah terdaftar!'
                     }));
-                    return;
                 }
 
                 // cek duplikasi email
-                if (users.find(u => u.email === email)) {
+                const existingEmail = await User.findOne({ where: { email } });
+                if (existingEmail) {
                     res.writeHead(409, { 'content-type': 'application/json' });
-                    res.end(JSON.stringify({
+                    return res.end(JSON.stringify({
                         success: false,
                         message: 'Email sudah terdaftar!'
                     }));
-                    return;
                 }
 
-                users.push({ username, email, password, role: "user" });
-                fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
+                // Buat user baru
+                const newUser = await User.create({ 
+                    username, 
+                    email, 
+                    password, 
+                    role: "user" 
+                });
 
                 res.writeHead(201, { 'content-type': 'application/json' });
                 res.end(JSON.stringify({
@@ -163,7 +170,7 @@ const server = http.createServer((req, res) =>{
                     role: "user"
                 }));
             } catch (err) {
-                console.log('Terjadi kesalahan saat menulis user.json:', err);
+                console.log('Terjadi kesalahan saat menulis database:', err);
                 res.writeHead(500, { 'content-type': 'application/json' });
                 res.end(JSON.stringify({
                     success: false,
@@ -177,37 +184,19 @@ const server = http.createServer((req, res) =>{
     // api film
     else if(pathname === '/api/films'){
         if(req.method === 'GET'){
-            const filmPath = path.join(__dirname, 'Database', 'films.json');
-            fs.readFile(filmPath, 'utf-8', (err, data) =>{
-                if(err){
-                    console.log('Error: ', err);
-                    res.writeHead(500, {'content-type' : 'application/json'});
-                    return res.end(JSON.stringify({error: 'Film Tidak Berhasil di Masukkan!'}))
-                }
-                let films = [];
-                if(data.trim()){
-                    try{
-                        films = JSON.parse(data);
-                    } catch(e){
-                        console.log('Error: ', e);
-                    }
-                    res.writeHead(200, {'content-type' : 'application/json'});
-                    res.end(JSON.stringify(films));
-                }
-            })
+            // Database query menggunakan Sequelize
+            try {
+                const films = await Film.findAll();
+                res.writeHead(200, {'content-type' : 'application/json'});
+                res.end(JSON.stringify(films));
+            } catch(err) {
+                console.log('Error: ', err);
+                res.writeHead(500, {'content-type' : 'application/json'});
+                return res.end(JSON.stringify({error: 'Film Tidak Berhasil di Masukkan!'}))
+            }
         } else if(req.method === 'POST'){
-            parseBody(req, (body) =>{
+            parseBody(req, async (body) =>{
                 try{
-                    const filmPath = path.join(__dirname, 'Database', 'films.json');
-                    let films = [];
-                    // cek dan jalankan klo emang ada aja
-                    if(fs.existsSync(filmPath)){
-                        const data = fs.readFileSync(filmPath, 'utf-8');
-                        if(data.trim()){
-                            films = JSON.parse(data);
-                        }
-                    }
-                    // properti film
                     const {
                         id,
                         title,
@@ -238,11 +227,11 @@ const server = http.createServer((req, res) =>{
 
                     const cleanId = id.trim();
 
-                    const index = films.findIndex(f => f.id === cleanId);
-                    if (index >= 0) {
-                        // Update
-                        films[index] = {
-                            id: cleanId,
+                    // Database operation menggunakan Sequelize
+                    const existingFilm = await Film.findByPk(cleanId);
+                    if (existingFilm) {
+                        // Update existing film
+                        await Film.update({
                             title,
                             genre: genre || '',
                             rating: rating || 'SU',
@@ -251,10 +240,10 @@ const server = http.createServer((req, res) =>{
                             duration,
                             format,
                             trailer
-                        };
+                        }, { where: { id: cleanId } });
                     } else {
-                        // Tambah baru
-                        films.push({
+                        // Create new film
+                        await Film.create({
                             id: cleanId,
                             title,
                             genre: genre || '',
@@ -266,7 +255,6 @@ const server = http.createServer((req, res) =>{
                             trailer
                         });
                     }
-                    fs.writeFileSync(filmPath, JSON.stringify(films, null, 2), 'utf-8');
 
                     res.writeHead(200, {'content-type' : 'application/json'});
                     res.end(JSON.stringify({
@@ -298,28 +286,16 @@ const server = http.createServer((req, res) =>{
         }
 
         try{
-            const filmPath = path.join(__dirname, 'Database', 'films.json');
-            let films = [];
-
-            if(fs.existsSync(filmPath)){
-                const data = fs.readFileSync(filmPath, 'utf-8');
-                if(data.trim()){
-                    films = JSON.parse(data);
-                }
-            }
-
-            const initialLength = films.length;
-            films = films.filter(film => film.id !== id);
-
-            if(films.length === initialLength){
+            // Database operation menggunakan Sequelize
+            const result = await Film.destroy({ where: { id } });
+            
+            if(result === 0){
                 res.writeHead(404, {'content-type' : 'application/json'});
                 return res.end(JSON.stringify({
                     success: false,
                     message: 'Film tidak ditemukan!'
                 }))
             }
-
-            fs.writeFileSync(filmPath, JSON.stringify(films, null, 2), 'utf-8');
 
             res.writeHead(200, { 'content-type': 'application/json' });
             res.end(JSON.stringify({
@@ -338,29 +314,37 @@ const server = http.createServer((req, res) =>{
     }
     // API Cinema
     else if(pathname === '/api/cinemas' && req.method === 'GET'){
-        const cinemaPath = path.join(__dirname, 'Database', 'cinemas.json');
-        fs.readFile(cinemaPath, 'utf-8', (err, data) => {
-            if (err) {
-                console.error('Gagal baca cinemas.json:', err);
-                res.writeHead(500, { 'content-type': 'application/json' });
-                return res.end(JSON.stringify({ 
-                    error: 'Gagal memuat data bioskop' 
-                }))
-            }
-            let cinemas = {};
-            if(data.trim()){
-                try{
-                    cinemas = JSON.parse(data);
-                } catch(err){
-                    console.error('Error: ', err);
-                }
-            }
+        // Database query menggunakan Sequelize
+        try {
+            const cinemas = await Cinema.findAll({
+                include: [{
+                    model: Film,
+                    through: { attributes: [] } // Exclude join table attributes
+                }]
+            });
+
+            // Convert to expected format
+            const cinemaMap = {};
+            cinemas.forEach(cinema => {
+                cinemaMap[cinema.id] = {
+                    name: cinema.name,
+                    info: cinema.info,
+                    films: cinema.Films.map(film => film.id)
+                };
+            });
+
             res.writeHead(200, {'content-type' : 'application/json'});
-            res.end(JSON.stringify(cinemas));
-        })
+            res.end(JSON.stringify(cinemaMap));
+        } catch(err) {
+            console.error('Gagal baca database:', err);
+            res.writeHead(500, { 'content-type': 'application/json' });
+            return res.end(JSON.stringify({ 
+                error: 'Gagal memuat data bioskop' 
+            }))
+        }
     }
     else if(pathname === '/api/cinemas' && req.method === 'POST'){
-        parseBody(req, (body) =>{
+        parseBody(req, async (body) =>{
             try{
                 const {cinemaId, filmIds} = body;
                 if (!cinemaId || !filmIds) {
@@ -368,20 +352,13 @@ const server = http.createServer((req, res) =>{
                     return res.end(JSON.stringify({ 
                         success: false, 
                         message: 'Data tidak lengkap' 
-                  }));
+                    }));
                 }
 
-                const cinemaPath = path.join(__dirname, 'Database', 'cinemas.json');
-                let cinemas = {};
-
-                if(fs.existsSync(cinemaPath)){
-                    const data = fs.readFileSync(cinemaPath, 'utf-8');
-                    if(data.trim()){
-                        cinemas = JSON.parse(data);
-                    }
-                }
-
-                if (!cinemas[cinemaId]) {
+                // Database operations menggunakan Sequelize
+                // Check if cinema exists
+                const cinema = await Cinema.findByPk(cinemaId);
+                if (!cinema) {
                     res.writeHead(404, { 'content-type': 'application/json' });
                     return res.end(JSON.stringify({ 
                         success: false, 
@@ -396,9 +373,14 @@ const server = http.createServer((req, res) =>{
                     filmsArray = filmIds;
                 }
 
-                cinemas[cinemaId].films = filmsArray;
+                // Clear existing relationships
+                await CinemaFilm.destroy({ where: { cinemaId } });
+
+                // Create new relationships
+                for (const filmId of filmsArray) {
+                    await CinemaFilm.create({ cinemaId, filmId });
+                }
                 
-                fs.writeFileSync(cinemaPath, JSON.stringify(cinemas, null, 2), 'utf-8');
                 res.writeHead(200, {'content-type' : 'application/json'});
                 res.end(JSON.stringify({
                     success: true,
@@ -415,13 +397,68 @@ const server = http.createServer((req, res) =>{
         })
     }
     else if(pathname === '/films.json'){
-        sendFile(res, path.join(__dirname, 'Database', 'films.json'), 'application/json');
+        // Database query menggunakan Sequelize untuk kompatibilitas
+        try {
+            const films = await Film.findAll();
+            res.writeHead(200, {'content-type': 'application/json'});
+            res.end(JSON.stringify(films));
+        } catch(err) {
+            console.error('Error loading films:', err);
+            res.writeHead(500, {'content-type': 'application/json'});
+            res.end(JSON.stringify([]));
+        }
     } else if(pathname === '/cinemas.json'){
-        sendFile(res, path.join(__dirname, 'Database', 'cinemas.json'), 'application/json');
+        // Database query menggunakan Sequelize untuk kompatibilitas
+        try {
+            const cinemas = await Cinema.findAll({
+                include: [{
+                    model: Film,
+                    through: { attributes: [] }
+                }]
+            });
+
+            const cinemaMap = {};
+            cinemas.forEach(cinema => {
+                cinemaMap[cinema.id] = {
+                    name: cinema.name,
+                    info: cinema.info,
+                    films: cinema.Films.map(film => film.id)
+                };
+            });
+
+            res.writeHead(200, {'content-type': 'application/json'});
+            res.end(JSON.stringify(cinemaMap));
+        } catch(err) {
+            console.error('Error loading cinemas:', err);
+            res.writeHead(500, {'content-type': 'application/json'});
+            res.end(JSON.stringify({}));
+        }
     } else if (pathname === '/assign') {
-    sendFile(res, path.join(__dirname, 'External', 'assign.html'));
+        sendFile(res, path.join(__dirname, 'External', 'assign.html'));
     } else if(pathname === '/jadwal.json'){
-        sendFile(res, path.join(__dirname, 'Database', 'jadwal.json'), 'application/json');
+        // Database query menggunakan Sequelize untuk kompatibilitas
+        try {
+            const schedules = await Schedule.findAll();
+            const scheduleMap = {};
+
+            schedules.forEach(schedule => {
+                if (!scheduleMap[schedule.filmId]) {
+                    scheduleMap[schedule.filmId] = [];
+                }
+                scheduleMap[schedule.filmId].push({
+                    cinema: schedule.cinema,
+                    price: schedule.price,
+                    times: schedule.times
+                });
+            });
+
+            res.writeHead(200, {'content-type': 'application/json'});
+            res.end(JSON.stringify(scheduleMap));
+        } catch(err) {
+            console.error('Error loading schedules:', err);
+            res.writeHead(500, {'content-type': 'application/json'});
+            res.end(JSON.stringify({}));
+        }
     }
     // direktori lain CSS, External JS
     else if(pathname.startsWith('/css/')){
@@ -451,6 +488,19 @@ const server = http.createServer((req, res) =>{
     }
 });
 
-server.listen(localPort, () =>{
-    console.log(`Deployed to http://localhost:${localPort}`);
-});
+// Initialize database connection before starting server
+async function initializeServer() {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connection established');
+        
+        server.listen(localPort, () =>{
+            console.log(`Deployed to http://localhost:${localPort}`);
+        });
+    } catch (error) {
+        console.error('Unable to connect to database:', error);
+        process.exit(1);
+    }
+}
+
+initializeServer();
