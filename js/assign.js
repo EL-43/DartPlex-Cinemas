@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         fetch('/api/cinemas'),
         fetch('/api/films')
       ]);
+      
+      if (!cinemaRes.ok || !filmRes.ok) {
+        throw new Error('Gagal memuat data dari server');
+      }
+      
       cinemas = await cinemaRes.json();
       films = await filmRes.json();
 
@@ -144,12 +149,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         messageEl.innerHTML = '<div class="alert alert-success">Jadwal berhasil disimpan!</div>';
         // Update data lokal
         cinemas[cinemaId].films = selectedFilms;
+        
+        // Auto-hide success message after 3 seconds
+        setTimeout(() => {
+          messageEl.innerHTML = '';
+        }, 3000);
       } else {
         messageEl.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
       }
     } catch (err) {
       console.error('Save error:', err);
-      messageEl.innerHTML = '<div class="alert alert-danger">Gagal, Cek koneksi!</div>';
+      messageEl.innerHTML = '<div class="alert alert-danger">Gagal menyimpan, cek koneksi!</div>';
     }
   });
 

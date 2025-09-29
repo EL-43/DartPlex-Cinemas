@@ -9,5 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "mysql2": "^3.15.1",
+    "sequelize": "^6.37.7"
+  }
 }
