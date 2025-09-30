@@ -1,0 +1,68 @@
+{
+  "drifting-home": [
+    {
+      "cinema": "Borgor DartPlex",
+      "price": "Rp35.000",
+      "times": ["12:15", "14:20", "16:25", "18:30", "20:35"]
+    },
+    {
+      "cinema": "Gading Paramount DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Sunda Islands DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Batavia DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    }
+  ],
+  "given-movie": [
+    {
+      "cinema": "Borgor DartPlex",
+      "price": "Rp35.000",
+      "times": ["12:15", "14:20", "16:25", "18:30", "20:35"]
+    },
+    {
+      "cinema": "Gading Paramount DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Sunda Islands DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Batavia DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    }
+  ],
+  "chainsaw-man": [
+    {
+      "cinema": "Borgor DartPlex",
+      "price": "Rp35.000",
+      "times": ["12:15", "14:20", "16:25", "18:30", "20:35"]
+    },
+    {
+      "cinema": "Gading Paramount DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Sunda Islands DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    },
+    {
+      "cinema": "Batavia DartPlex",
+      "price": "Rp40.000",
+      "times": ["13:00", "15:15", "17:45", "20:00"]
+    }
+  ]
+}

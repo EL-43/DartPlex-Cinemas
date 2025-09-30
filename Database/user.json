@@ -1,0 +1,20 @@
+[
+  {
+    "username": "ADMIN",
+    "email": "admin@gmail.com",
+    "password": "password123",
+    "role": "admin"
+  },
+  {
+    "username": "TotiBakar",
+    "email": "totibakar1902@gmail.com",
+    "password": "rotibakarituenaktau",
+    "role": "user"
+  },
+  {
+    "username": "elin",
+    "email": "elin@gmail.com",
+    "password": "elin",
+    "role": "user"
+  }
+]
