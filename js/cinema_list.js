@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isLoggedIn && authButtons) {
     authButtons.innerHTML = `
       <div class="dropdown">
-        <a class="btn btn-outline-secondary dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-user dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user me-1"></i> ${savedUsername}
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -71,8 +71,8 @@ async function renderBioskopList() {
       const card = document.createElement("div");
       card.className = "p-3 border rounded shadow-sm bioskop-card d-flex justify-content-between align-items-center";
       card.innerHTML = `
-        <span class="fw-bold">${cinema.name}</span>
-        <span class="text-muted">></span>
+        <span class="fw-bold" style="color: whitesmoke;">${cinema.name}</span>
+        <span class="text-muted" style="color: whitesmoke;"></span>
       `;
       card.style.cursor = "pointer";
       card.addEventListener("click", () => showDetail(id, filmMap));
@@ -97,7 +97,10 @@ function showDetail(cinemaId, filmMap) {
   document.getElementById("detail-bioskop-title").textContent = cinema.name;
 
   const infoEl = document.getElementById("detail-bioskop-info");
-  if (infoEl) infoEl.textContent = cinema.info || "";
+  if (infoEl) {
+    infoEl.textContent = cinema.info || "";
+      infoEl.style.setProperty("color", "whitesmoke", "important");
+  } 
 
   // reset
   filmList.innerHTML = "";
