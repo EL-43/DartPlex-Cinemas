@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (isLoggedIn && authButtons) {
     authButtons.innerHTML = `
       <div class="dropdown">
-        <a class="btn btn-outline-secondary dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-user dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user me-1"></i> ${savedUsername}
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

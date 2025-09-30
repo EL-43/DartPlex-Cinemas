@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, rgba(33, 136, 55, 0.623) 0%, #ffffffc2 100%);
+  background: linear-gradient(135deg, #3f56b4 0%, #202b56 50%, #3f56b4 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
 }
@@ -8,7 +8,18 @@ body {
   position: sticky;  
   top: 0;           
   z-index: 1000;   
-  background-color: rgba(255, 253, 253, 0.671);
+  background-color: rgba(255, 253, 253, 0.338);
+}
+
+.btn-user {
+  color: whitesmoke !important;
+  background-color: rgba(59, 59, 59, 0.21);
+  border: none !important;
+}
+
+.btn-user:hover {
+  background-color: rgba(59, 59, 59, 0.7);
+  color: white !important;
 }
 
 .cinema {
@@ -19,8 +30,7 @@ body {
 }
 
 .location-badge {
-  background-color: rgba(255, 253, 253, 0.74);
-  border: 1px solid #dee2e6;
+  background-color: rgba(255, 253, 253, 0.338);
   font-weight: bold;
 }
 
@@ -32,7 +42,7 @@ body {
 
 .loginbutton {
   transition: transform 0.3s ease-in-out;
-  color: black;
+  color: whitesmoke;
   background: none;
   border: none;
   text-decoration: none;
@@ -40,7 +50,7 @@ body {
 
 .loginbutton:hover {
   transform: scale(1.2);
-  color: rgb(0, 101, 99);
+  color: rgba(245, 245, 245, 0.632);
 }
 
 .signupbutton {
@@ -53,6 +63,12 @@ body {
   border-radius: 50px;
 }
 
+.signupbutton:hover {
+ background: rgba(0, 153, 145, 0.526);
+ text-decoration: none;
+ transform: scale(1.1);
+}
+
 .berandatitle a {
   color: rgb(36, 36, 36);
   background: none;
@@ -61,6 +77,10 @@ body {
 
 .breadcrumb {
   margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: whitesmoke;
 }
 
 .badge-safe {
