@@ -8,7 +8,7 @@ body {
   position: sticky;  
   top: 0;           
   z-index: 1000;   
-  background-color: rgba(255, 253, 253, 0.338);
+  background-color: rgba(22, 19, 19, 0.377);
 }
 
 .btn-user {
@@ -57,7 +57,7 @@ body {
 .signupbutton {
   transition: transform 0.3s ease-in-out;
   color: white;
-  background: rgb(0, 153, 145);
+  background: rgb(63, 86, 180);
   text-decoration: none;
   padding: 10px 24px; 
   font-size: 1rem;
@@ -65,9 +65,9 @@ body {
 }
 
 .signupbutton:hover {
- background: rgba(0, 153, 145, 0.526);
- text-decoration: none;
- transform: scale(1.1);
+  background: rgba(63, 86, 180, 0.526);
+  text-decoration: none;
+  transform: scale(1.1);
 }
 
 .hero-title {
