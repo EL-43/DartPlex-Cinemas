@@ -6,7 +6,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #3f56b4 0%, #202b56 50%, #3f56b4 100%);
+    background: linear-gradient(135deg, #3f56b4 0%, #202b56 50%, rgb(63, 86, 180) 100%);
     background-position: 95% 80%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -17,7 +17,7 @@ body {
 
 .wrapper {
     width: 400px;
-    background: rgba(255, 255, 255, 0.35); 
+    background: rgba(22, 19, 19, 0.377); 
     backdrop-filter: blur(12px);            
     -webkit-backdrop-filter: blur(12px);
     padding: 40px;
@@ -52,10 +52,10 @@ body {
     height: 100%;
     text-align: center;
     font-size: 16px;
-    border: 2px solid rgba(0, 0, 0, 0.4);
+    border: 2px solid whitesmoke;
     border-radius: 40px;
     background: transparent;
-    color: #000000;
+    color: whitesmoke;
     padding: 0 45px 0 20px;
     outline: none;
     transition: all 0.3s ease;
@@ -66,7 +66,7 @@ body {
 }
 
 .input-box input:focus {
-    border-color: #ffcc00;
+    border-color: rgb(248, 168, 47);
     box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
 }
 
@@ -101,7 +101,7 @@ body {
 }
 
 .wrapper .btn:hover {
-    background: #ffcc00;
+    background: rgb(248, 168, 47);
     color: #222;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
     transform: scale(1.05);
