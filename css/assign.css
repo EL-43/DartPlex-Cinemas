@@ -8,7 +8,7 @@ body {
   position: sticky;  
   top: 0;           
   z-index: 1000;   
-  background-color: rgba(255, 253, 253, 0.671);
+  background-color: rgba(22, 19, 19, 0.377);
 }
 
 .cinema {
@@ -19,8 +19,7 @@ body {
 }
 
 .location-badge {
-  background-color: rgba(255, 253, 253, 0.74);
-  border: 1px solid #dee2e6;
+  background-color: rgba(255, 253, 253, 0.338);
   font-weight: bold;
 }
 

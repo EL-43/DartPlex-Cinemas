@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
             </div>
             <div class="card-body text-center">
-              <h6 class="card-title">${film.title}</h6>
+              <h6 class="card-title" style="color: whitesmoke;">${film.title}</h6>
               <div class="d-flex justify-content-center gap-2">
                 <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">
                   ${film.format}
