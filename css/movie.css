@@ -42,7 +42,7 @@ body {
 
 .loginbutton {
   transition: transform 0.3s ease-in-out;
-  color: black;
+  color: whitesmoke;
   background: none;
   border: none;
   text-decoration: none;
@@ -50,18 +50,25 @@ body {
 
 .loginbutton:hover {
   transform: scale(1.2);
-  color: rgb(0, 101, 99);
+  color: rgba(245, 245, 245, 0.632);
 }
 
 .signupbutton {
   transition: transform 0.3s ease-in-out;
   color: white;
-  background: rgb(0, 153, 145);
+  background: rgb(63, 86, 180);
   text-decoration: none;
   padding: 10px 24px; 
   font-size: 1rem;
   border-radius: 50px;
 }
+
+.signupbutton:hover {
+  background: rgba(63, 86, 180, 0.526);
+  text-decoration: none;
+  transform: scale(1.1);
+}
+
 
 .breadcrumb-item + .breadcrumb-item::before {
   color: whitesmoke;
