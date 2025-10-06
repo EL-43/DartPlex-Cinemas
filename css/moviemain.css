@@ -145,7 +145,7 @@ body {
 }
 
 .btn-tiket {
-  background-color: rgba(33, 136, 56, 0.137);
+  background-color: rgba(63, 86, 180, 0.526);
   color: #ffffff;
   border: none;
   transition: 0.3s ease;
@@ -154,7 +154,7 @@ body {
 }
 
 .btn-tiket:hover {
-  background-color: rgba(33, 136, 56, 0.336);
+  background-color: rgb(63, 86, 180);
   color: #ffffff;
   text-decoration: none;
 }

@@ -63,8 +63,9 @@ body {
     border: none;
 }
 
+
 .cinema-select-card {
-    background-color: #e9ecef;
+    background-color: #fff;
 }
 
 .film-checkboxes {
@@ -77,12 +78,12 @@ body {
 }
 
 .btn-save {
-    background-color: #198754;
+    background-color: rgb(63, 86, 180);
     border: none;
 }
 
 .btn-save:hover {
-    background-color: #157347;
+    background-color: rgba(63, 86, 180, 0.526);
 }
 
 .section-title {

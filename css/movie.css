@@ -130,13 +130,13 @@ body {
 }
 
 .accordion-button:not(.collapsed) {
-  background: rgba(33, 136, 55, 0.328);
+  background: rgba(63, 86, 180, 0.526);
 }  
 
 .btn-trailer,
 #lihat-jadwal {
   color: #ffffff;
-  background-color: rgb(33, 136, 55);
+  background-color: rgb(63, 86, 180);
   transition: 0.3s ease;
   text-decoration: none;
   border: none; 
@@ -144,13 +144,13 @@ body {
 
 .btn-trailer:hover,
 #lihat-jadwal:hover {
-  background-color: rgba(33, 136, 55, 0.692);
+  background-color: rgba(63, 86, 180, 0.526);
   color: #ffffff;
   text-decoration: none;
 }
 
 .btn-jam {
-  background-color: rgb(33, 136, 55);
+  background-color: rgb(63, 86, 180);
   color: white;
   border-radius: 6px;
   padding: 8px 16px;
@@ -159,5 +159,5 @@ body {
 }
 
 .btn-jam:hover {
-  background-color: rgba(33, 136, 55, 0.692);
+  background-color: rgba(63, 86, 180, 0.526);
 }
