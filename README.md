@@ -9,4 +9,6 @@ run the sync.js script to sync existing .json data with the database
 
 finally, start the server with nodemon
 
-node server.js
+> node server.js
+> OR
+> nodemon
