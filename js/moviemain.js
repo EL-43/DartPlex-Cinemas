@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const errorMessage = document.getElementById('error-message');
   const authButtons = document.querySelector('.auth-buttons');
 
+  // Custom popup modal elements
+  const loginChoiceModalElement = document.getElementById('loginChoiceModal');
+  let loginChoiceModal;
+  if (loginChoiceModalElement) {
+    loginChoiceModal = new bootstrap.Modal(loginChoiceModalElement);
+  }
+  const loginRedirectBtn = document.getElementById('loginRedirectBtn');
+  const signupRedirectBtn = document.getElementById('signupRedirectBtn');
+  let redirectUrl = null;
+
   // auth handling
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const savedUsername = localStorage.getItem("savedUsername") || localStorage.getItem("currentUsername") || "User";
@@ -48,7 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       throw new Error('Data film kosong!');
     }
 
-    // Modal Trailer 
+    // Modal Trailer (Pastikan ini ada di HTML atau tambahkan secara dinamis)
+    // Jika tidak ada di HTML, kode ini akan menambahkannya
     if (!document.getElementById("trailerModal")) {
       const trailerModalHTML = `
         <div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
@@ -96,25 +107,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="card-img-wrapper position-relative">
               <img src="${film.poster}" class="card-img-top" alt="Poster ${film.title}">
               <div class="card-overlay d-flex flex-column justify-content-center align-items-center">
-                <a  
-                   class="btn btn-trailer rounded-pill mb-2 px-4" 
-                   data-trailer="${film.trailer}">
-                   Lihat trailer
+                <a
+                    class="btn btn-trailer rounded-pill mb-2 px-4"
+                    data-trailer="${film.trailer}">
+                    Lihat trailer
                 </a>
-                <a  
-                   class="btn btn-tiket rounded-pill mb-2 px-4" 
-                   data-film-id="${film.id}" 
-                   data-film-title="${film.title}">
-                   Beli tiket
+                <a
+                    class="btn btn-tiket rounded-pill mb-2 px-4"
+                    data-film-id="${film.id}"
+                    data-film-title="${film.title}">
+                    Beli tiket
                 </a>
               </div>
             </div>
             <div class="card-body text-center">
               <h6 class="card-title">${film.title}</h6>
               <div class="d-flex justify-content-center gap-2">
-                <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">${film.format}</span>
-                <span class="badge ${ratingClass}" style="${ratingStyle}">${film.rating}</span>
-                <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">${film.duration}</span>
+                <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">
+                  ${film.format}
+                </span>
+                <span class="badge ${ratingClass}" style="${ratingStyle}">
+                  ${film.rating}
+                </span>
+                <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">
+                  ${film.duration}
+                </span>
               </div>
             </div>
           </div>
@@ -144,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    // Event tombol beli tiket
+    // Event tombol beli tiket (Diubah untuk menggunakan modal kustom)
     document.querySelectorAll(".btn-tiket").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -154,14 +171,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isLoggedIn) {
           window.location.href = `/movie?film=${filmId}`;
         } else {
-          const choice = confirm(`Kamu belum login.\n\nPunya akun? Klik OK untuk login, Cancel untuk daftar.`);
-          if (choice) {
-            window.location.href = `/login?redirect=/movie?film=${filmId}`;
-          } else {
-            window.location.href = `/signup?redirect=/movie?film=${filmId}`;
-          }
+          // Simpan filmId dan tampilkan modal kustom
+          targetFilmId = filmId;
+          loginChoiceModal.show();
         }
       });
+    });
+
+    // Event listener untuk tombol LOGIN di dalam modal kustom
+    loginRedirectBtn.addEventListener('click', () => {
+      if (targetFilmId) {
+        window.location.href = `/login?redirect=/movie?film=${targetFilmId}`;
+      }
+    });
+
+    // Event listener untuk tombol DAFTAR di dalam modal kustom
+    signupRedirectBtn.addEventListener('click', () => {
+      if (targetFilmId) {
+        window.location.href = `/signup?redirect=/movie?film=${targetFilmId}`;
+      }
     });
 
   } catch (error) {

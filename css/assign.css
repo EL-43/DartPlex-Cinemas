@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, rgba(33, 136, 55, 0.623) 0%, #ffffffc2 100%);
+  background: linear-gradient(135deg, #3f56b4 0%, #202b56 50%, #3f56b4 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
 }

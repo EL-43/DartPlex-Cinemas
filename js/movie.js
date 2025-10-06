@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (isLoggedIn && authButtons) {
     authButtons.innerHTML = `
       <div class="dropdown">
-        <a class="btn btn-outline-secondary dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-user dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user me-1"></i> ${savedUsername}
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     breadcrumbEl.textContent = film.title;
     filmContainer.textContent = film.title;
     genreEl.textContent = film.genre;
+    genreEl.style.setProperty('color', 'whitesmoke', 'important');
     posterEl.src = film.poster;
 
     ratingEl.textContent = film.rating;
@@ -92,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     durationEl.textContent = film.duration;
     formatEl.textContent = film.format;
     synopsisEl.textContent = film.description;
+    synopsisEl.style.setProperty('color', 'whitesmoke', 'important');
 
     trailerEl.setAttribute("data-trailer", film.trailer);
 
@@ -133,18 +135,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           item.innerHTML = `
             <h2 class="accordion-header" id="heading${index}">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+              <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
                 ${cinema.cinema}
               </button>
             </h2>
             <div id="collapse${index}" class="accordion-collapse collapse" data-bs-parent="#jadwal-accordion">
               <div class="accordion-body">
                 <div class="d-flex justify-content-between mb-2">
-                  <span>Reguler 2D</span>
+                  <span class="fw-bold">Reguler 2D</span>
                   <span class="fw-bold">${cinema.price}</span>
                 </div>
                 <div class="d-flex flex-wrap gap-2">
-                  ${cinema.times.map(time => `<button class="btn btn-outline-primary btn-sm btn-jam" data-time="${time}" data-cinema="${cinema.cinema}">${time}</button>`).join('')}
+                  ${Array.isArray(cinema.times) 
+                    ? cinema.times.map(time => `<button class="btn btn-outline-primary btn-sm btn-jam" data-time="${time}" data-cinema="${cinema.cinema}">${time}</button>`).join(''): ''
+                  }
                 </div>
               </div>
             </div>

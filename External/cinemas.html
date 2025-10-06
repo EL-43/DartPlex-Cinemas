@@ -28,7 +28,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-3">
         <li class="breadcrumb-item berandatitle">
-          <a href="/" style="color: whitesmoke;">Beranda</a> <!-- ../ testing -->
+          <a href="/" style="color: whitesmoke;">Beranda</a>
         </li>
         <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: whitesmoke;"><a href="/cinemas">Bioskop</a></li>
       </ol>
@@ -56,7 +56,24 @@
     <div id="film-list" class="d-flex flex-column gap-3" style="color: whitesmoke;"></div>
   </div>
 
-  <script src="/js/cinema_list.js"></script>
+  <div class="modal fade" id="loginChoiceModal" tabindex="-1" aria-labelledby="loginChoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginChoiceModalLabel">Anda Belum Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Silakan login untuk melihat jadwal film. Belum punya akun? Daftar sekarang!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" id="signupRedirectBtn">Daftar</button>
+          <button type="button" class="btn btn-primary" id="loginRedirectBtn">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/cinema_list.js"></script>
 </body>
 </html>

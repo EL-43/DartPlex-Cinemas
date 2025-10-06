@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (isLoggedIn && authButtons) {
     authButtons.innerHTML = `
       <div class="dropdown">
-        <a class="btn btn-outline-secondary dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-user dropdown-toggle fw-bold" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user me-1"></i> ${savedUsername}
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
             </div>
             <div class="card-body text-center">
-              <h6 class="card-title">${film.title}</h6>
-              <p class="text-muted small">${film.description || '-'}</p>
+              <h6 class="card-title fw-bold" style="color: whitesmoke;">${film.title}</h6>
+              <p class="small" style="color: whitesmoke;">${film.description || '-'}</p>
               <div class="d-flex justify-content-center gap-2 mb-2">
                 <span class="badge" style="background-color: rgb(240, 240, 240); color: rgb(33, 37, 41);">${film.genre || film.format}</span>
                 <span class="badge ${ratingClass}" style="${ratingStyle}">${film.rating}</span>

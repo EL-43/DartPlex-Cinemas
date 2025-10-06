@@ -1,16 +1,24 @@
-// render dinamis, udah di ubah
 const sectionList = document.getElementById("section-bioskop");
 const sectionDetail = document.getElementById("section-detail");
 const bioskopList = document.getElementById("bioskop-list");
 const filmList = document.getElementById("film-list");
 
-let cinemasData = {};   // cinemas.json
-let filmsData = {};     // films.json
+let cinemasData = {};
+let filmsData = {};
+
+// Custom popup modal elements
+const loginChoiceModalElement = document.getElementById('loginChoiceModal');
+let loginChoiceModal;
+if (loginChoiceModalElement) {
+  loginChoiceModal = new bootstrap.Modal(loginChoiceModalElement);
+}
+const loginRedirectBtn = document.getElementById('loginRedirectBtn');
+const signupRedirectBtn = document.getElementById('signupRedirectBtn');
+let redirectUrl = null;
 
 // Auth handling
 document.addEventListener("DOMContentLoaded", () => {
   const authButtons = document.querySelector(".auth-buttons");
-
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const savedUsername = localStorage.getItem("savedUsername") || localStorage.getItem("currentUsername") || "User";
 
@@ -25,9 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
     `;
-
-    // Sign out handler
-    document.querySelector('#signOutBtn').addEventListener('click', (e) => {
+    document.querySelector('#signOutBtn')?.addEventListener('click', (e) => {
       e.preventDefault();
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("savedUsername");
@@ -37,35 +43,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// untouchable
 function normalizePosterPath(posterPath) {
   if (!posterPath) return "";
   return posterPath.replace(/^(\.\.\/)+/, "");
 }
 
-// Cinema
 async function renderBioskopList() {
   try {
-    // ambil cinema
     const cinemaResponse = await fetch('/cinemas.json');
     if (!cinemaResponse.ok) throw new Error(`Gagal memuat data bioskop: ${cinemaResponse.status}`);
     cinemasData = await cinemaResponse.json();
 
-    // ambil film
     const filmResponse = await fetch('/films.json');
     if (!filmResponse.ok) throw new Error(`Gagal memuat data film: ${filmResponse.status}`);
     filmsData = await filmResponse.json();
 
-    // film -> id
     const filmMap = {};
     filmsData.forEach(film => {
       filmMap[film.id] = film;
     });
 
-    // reset
     bioskopList.innerHTML = '';
-
-    // Card
     Object.keys(cinemasData).forEach(id => {
       const cinema = cinemasData[id];
       const card = document.createElement("div");
@@ -80,32 +78,27 @@ async function renderBioskopList() {
     });
 
     sectionDetail.classList.add("d-none");
-
   } catch (error) {
     console.error('Error loading cinema/film data:', error);
     bioskopList.innerHTML = '<p class="text-danger">Gagal memuat data bioskop atau film.</p>';
   }
 }
 
-// render detail
 function showDetail(cinemaId, filmMap) {
   const cinema = cinemasData[cinemaId];
   if (!cinema) return;
 
-  // info
   document.getElementById("detail-bioskop-name").textContent = cinema.name;
   document.getElementById("detail-bioskop-title").textContent = cinema.name;
 
   const infoEl = document.getElementById("detail-bioskop-info");
   if (infoEl) {
     infoEl.textContent = cinema.info || "";
-      infoEl.style.setProperty("color", "whitesmoke", "important");
-  } 
+    infoEl.style.setProperty("color", "whitesmoke", "important");
+  }
 
-  // reset
   filmList.innerHTML = "";
 
-  // render detail per cinema
   cinema.films.forEach(fKey => {
     const film = filmMap[fKey];
     if (!film) {
@@ -116,7 +109,6 @@ function showDetail(cinemaId, filmMap) {
       return;
     }
 
-    // rating badge
     let ratingHTML = "";
     if (film.rating === "R13+") {
       ratingHTML = `<span class="badge bg-warning text-dark">${film.rating}</span>`;
@@ -128,10 +120,7 @@ function showDetail(cinemaId, filmMap) {
       ratingHTML = `<span class="badge bg-light text-dark">${film.rating}</span>`;
     }
 
-    // untouchable
     const posterSrc = normalizePosterPath(film.poster);
-
-    // Card
     const card = document.createElement("div");
     card.className = "p-3 border rounded d-flex gap-3 align-items-center film-card";
     card.style.cursor = "pointer";
@@ -148,7 +137,6 @@ function showDetail(cinemaId, filmMap) {
       </div>
     `;
 
-    // Klik film -> cek login
     card.addEventListener("click", () => {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       const targetUrl = `/movie?film=${encodeURIComponent(fKey)}`;
@@ -156,13 +144,10 @@ function showDetail(cinemaId, filmMap) {
       if (isLoggedIn) {
         window.location.href = targetUrl;
       } else {
-        const choice = confirm(`Kamu belum login.\n\nPunya akun? Klik OK untuk login, Cancel untuk daftar.`);
-        if (choice) {
-          localStorage.setItem("redirectAfterLogin", targetUrl);
-          window.location.href = `/login?redirect=${encodeURIComponent(targetUrl)}`;
-        } else {
-          localStorage.setItem("redirectAfterLogin", targetUrl);
-          window.location.href = `/signup?redirect=${encodeURIComponent(targetUrl)}`;
+        // Simpan URL redirect dan tampilkan modal kustom
+        redirectUrl = targetUrl;
+        if (loginChoiceModal) {
+          loginChoiceModal.show();
         }
       }
     });
@@ -170,7 +155,6 @@ function showDetail(cinemaId, filmMap) {
     filmList.appendChild(card);
   });
 
-  // reset dan unreset
   sectionList.classList.add("d-none");
   sectionDetail.classList.remove("d-none");
 }
@@ -184,7 +168,20 @@ document.getElementById("back-to-list")?.addEventListener("click", (e) => {
 document.querySelector('#section-bioskop .berandatitle a')?.setAttribute('href', '/');
 document.addEventListener('DOMContentLoaded', renderBioskopList);
 
-// Redirect
+// Event listener untuk tombol-tombol di dalam modal
+loginRedirectBtn?.addEventListener('click', () => {
+  if (redirectUrl) {
+    window.location.href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
+  }
+});
+
+signupRedirectBtn?.addEventListener('click', () => {
+  if (redirectUrl) {
+    window.location.href = `/signup?redirect=${encodeURIComponent(redirectUrl)}`;
+  }
+});
+
+// Redirect untuk tombol login/signup utama di navbar
 document.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.querySelector(".auth-buttons a[href='/login']");
   const signupLink = document.querySelector(".auth-buttons a[href='/signup']");
