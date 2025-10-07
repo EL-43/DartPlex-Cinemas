@@ -509,8 +509,8 @@ async function initializeServer() {
         await sequelize.authenticate();
         console.log('Database connection established');
         
-        server.listen(PORT, () =>{
-            console.log(`Server running on port ${PORT}`);
+        server.listen(MYSQLPORT, () =>{
+            console.log(`Server running on port ${MYSQLPORT}`);
         });
     } catch (error) {
         console.error('Unable to connect to database:', error);
