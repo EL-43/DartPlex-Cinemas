@@ -5,6 +5,21 @@ const url = require('url');
 const querystring = require('querystring');
 const { json } = require('stream/consumers');
 const PORT = process.env.PORT || 3000; // port localhost
+
+// Coba autentikasi koneksi saja
+sequelize.authenticate().then(() => {
+    console.log('✅ Berhasil terhubung ke database!');
+    // Baru sync model atau jalankan server
+    return sequelize.sync(); // ini akan buat tabel jika belum ada
+}).then(() => {
+    console.log('✅ Tabel sudah disinkronisasi (jika perlu)');
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}).catch(err => {
+    console.error('❌ Gagal koneksi atau sync database:', err);
+});
+
 require('dotenv').config();
 
 // Database models
