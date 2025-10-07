@@ -6,7 +6,7 @@ const path = require('path');
 const url = require('url');
 const querystring = require('querystring');
 const { json } = require('stream/consumers');
-const MYSQLPORT = process.env.PORT || 3000; // port localhost
+const MYSQLPORT = process.env.MYSQLPORT || 3000; // port localhost
 
 // Database models
 const sequelize = require('./db');
@@ -24,7 +24,7 @@ sequelize.authenticate().then(() => {
 }).then(() => {
     console.log('✅ Tabel sudah disinkronisasi (jika perlu)');
     app.listen(MYSQLPORT, () => {
-        console.log(`Server running on port ${PORT}`);
+        console.log(`Server running on port ${MYSQLPORT}`);
     });
 }).catch(err => {
     console.error('❌ Gagal koneksi atau sync database:', err);
