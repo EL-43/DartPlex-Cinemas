@@ -16,19 +16,19 @@ const Cinema = require('./models/Cinema');
 const CinemaFilm = require('./models/CinemaFilm');
 const Schedule = require('./models/Schedule');
 
-// Coba autentikasi koneksi saja
+/* Coba autentikasi koneksi saja
 sequelize.authenticate().then(() => {
     console.log('✅ Berhasil terhubung ke database!');
     // Baru sync model atau jalankan server
     return sequelize.sync(); // ini akan buat tabel jika belum ada
 }).then(() => {
     console.log('✅ Tabel sudah disinkronisasi (jika perlu)');
-    app.listen(MYSQLPORT, () => {
+    server.listen(MYSQLPORT, () => {
         console.log(`Server running on port ${MYSQLPORT}`);
     });
 }).catch(err => {
     console.error('❌ Gagal koneksi atau sync database:', err);
-});
+});*/
 
 Cinema.belongsToMany(Film, { through: CinemaFilm, foreignKey: 'cinemaId' });
 Film.belongsToMany(Cinema, { through: CinemaFilm, foreignKey: 'filmId' });
@@ -504,8 +504,7 @@ const server = http.createServer(async (req, res) =>{
     }
 });
 
-// Initialize database connection before starting server
-/*async function initializeServer() {
+async function initializeServer() {
     try {
         await sequelize.authenticate();
         console.log('Database connection established');
@@ -517,9 +516,9 @@ const server = http.createServer(async (req, res) =>{
         console.error('Unable to connect to database:', error);
         process.exit(1);
     }
-}
+};
 
-initializeServer();*/
+initializeServer();
 
 const connectWithRetry = async () => {
     try {
