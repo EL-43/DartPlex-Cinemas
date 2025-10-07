@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -27,8 +29,6 @@ sequelize.authenticate().then(() => {
 }).catch(err => {
     console.error('❌ Gagal koneksi atau sync database:', err);
 });
-
-require('dotenv').config();
 
 Cinema.belongsToMany(Film, { through: CinemaFilm, foreignKey: 'cinemaId' });
 Film.belongsToMany(Cinema, { through: CinemaFilm, foreignKey: 'filmId' });
