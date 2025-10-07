@@ -6,7 +6,7 @@ const path = require('path');
 const url = require('url');
 const querystring = require('querystring');
 const { json } = require('stream/consumers');
-const PORT = process.env.PORT || 3000; // port localhost
+const MYSQLPORT = process.env.PORT || 3000; // port localhost
 
 // Database models
 const sequelize = require('./db');
@@ -23,7 +23,7 @@ sequelize.authenticate().then(() => {
     return sequelize.sync(); // ini akan buat tabel jika belum ada
 }).then(() => {
     console.log('✅ Tabel sudah disinkronisasi (jika perlu)');
-    app.listen(PORT, () => {
+    app.listen(MYSQLPORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
 }).catch(err => {

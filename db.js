@@ -1,4 +1,5 @@
 // db.js
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
 console.log('MYSQL_URL available:', process.env.MYSQL_URL ? 'YES' : 'NO');
