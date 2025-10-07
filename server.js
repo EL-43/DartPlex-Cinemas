@@ -505,7 +505,7 @@ const server = http.createServer(async (req, res) =>{
 });
 
 // Initialize database connection before starting server
-async function initializeServer() {
+/*async function initializeServer() {
     try {
         await sequelize.authenticate();
         console.log('Database connection established');
@@ -519,4 +519,17 @@ async function initializeServer() {
     }
 }
 
-initializeServer();
+initializeServer();*/
+
+const connectWithRetry = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connected successfully');
+    } catch (err) {
+        console.error('Database connection failed, retrying in 5 seconds:', err);
+        setTimeout(connectWithRetry, 5000);
+    }
+};
+
+connectWithRetry();
+
