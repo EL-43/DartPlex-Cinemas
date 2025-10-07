@@ -4,7 +4,8 @@ const path = require('path');
 const url = require('url');
 const querystring = require('querystring');
 const { json } = require('stream/consumers');
-const localPort = 3000; // port localhost
+const PORT = process.env.PORT || 3000; // port localhost
+require('dotenv').config();
 
 // Database models
 const sequelize = require('./db');
@@ -494,8 +495,8 @@ async function initializeServer() {
         await sequelize.authenticate();
         console.log('Database connection established');
         
-        server.listen(localPort, () =>{
-            console.log(`Deployed to http://localhost:${localPort}`);
+        server.listen(PORT, () =>{
+            console.log(`Server running on port ${PORT}`);
         });
     } catch (error) {
         console.error('Unable to connect to database:', error);
