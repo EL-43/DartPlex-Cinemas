@@ -6,6 +6,14 @@ const querystring = require('querystring');
 const { json } = require('stream/consumers');
 const PORT = process.env.PORT || 3000; // port localhost
 
+// Database models
+const sequelize = require('./db');
+const Film = require('./models/Film');
+const User = require('./models/User');
+const Cinema = require('./models/Cinema');
+const CinemaFilm = require('./models/CinemaFilm');
+const Schedule = require('./models/Schedule');
+
 // Coba autentikasi koneksi saja
 sequelize.authenticate().then(() => {
     console.log('✅ Berhasil terhubung ke database!');
@@ -21,14 +29,6 @@ sequelize.authenticate().then(() => {
 });
 
 require('dotenv').config();
-
-// Database models
-const sequelize = require('./db');
-const Film = require('./models/Film');
-const User = require('./models/User');
-const Cinema = require('./models/Cinema');
-const CinemaFilm = require('./models/CinemaFilm');
-const Schedule = require('./models/Schedule');
 
 Cinema.belongsToMany(Film, { through: CinemaFilm, foreignKey: 'cinemaId' });
 Film.belongsToMany(Cinema, { through: CinemaFilm, foreignKey: 'filmId' });
