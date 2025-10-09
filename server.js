@@ -6,7 +6,11 @@ const path = require('path');
 const url = require('url');
 const querystring = require('querystring');
 const { json } = require('stream/consumers');
+const express = require('express');
+const app = express();
+
 const MYSQLPORT = process.env.MYSQLPORT || 3000; // port localhost
+app.listen(MYSQLPORT);
 
 // Database models
 const sequelize = require('./db');
