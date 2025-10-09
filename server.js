@@ -478,7 +478,7 @@ const server = http.createServer(async (req, res) =>{
     }
     // direktori lain CSS, External JS
     else if(pathname.startsWith('/css/')){
-        const cssPath = path.join(__dirname, 'CSS', pathname.substring(5));
+        const cssPath = path.join(__dirname, 'css', pathname.substring(5));
         sendFile(res, cssPath, 'text/css');
     }
     else if(pathname.startsWith('/js/')){
