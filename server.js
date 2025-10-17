@@ -10,7 +10,6 @@ const express = require('express');
 const app = express();
 
 const MYSQLPORT = process.env.MYSQLPORT || 3000; // port localhost
-app.listen(MYSQLPORT);
 
 // Database models
 const sequelize = require('./db');
@@ -20,19 +19,6 @@ const Cinema = require('./models/Cinema');
 const CinemaFilm = require('./models/CinemaFilm');
 const Schedule = require('./models/Schedule');
 
-/* Coba autentikasi koneksi saja
-sequelize.authenticate().then(() => {
-    console.log('✅ Berhasil terhubung ke database!');
-    // Baru sync model atau jalankan server
-    return sequelize.sync(); // ini akan buat tabel jika belum ada
-}).then(() => {
-    console.log('✅ Tabel sudah disinkronisasi (jika perlu)');
-    server.listen(MYSQLPORT, () => {
-        console.log(`Server running on port ${MYSQLPORT}`);
-    });
-}).catch(err => {
-    console.error('❌ Gagal koneksi atau sync database:', err);
-});*/
 
 Cinema.belongsToMany(Film, { through: CinemaFilm, foreignKey: 'cinemaId' });
 Film.belongsToMany(Cinema, { through: CinemaFilm, foreignKey: 'filmId' });
