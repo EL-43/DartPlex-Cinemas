@@ -1,14 +1,47 @@
-# Dependencies
-if there's no database called dartplex, create it with sql first:
 
-> CREATE DATABASE dartplex;
+## Setup Instructions
 
-run the sync.js script to sync existing .json data with the database
+1. **Database Setup**
+   ```sql
+   CREATE DATABASE dartplex;
+   ```
 
-> node sync.js
+2. **Environment Setup**
+   - Copy `.env.example` to `.env`
+   - Update the following variables in `.env`:
+     ```plaintext
+     PORT=3000
+     DB_HOST=your_host
+     DB_USER=your_username
+     DB_PASSWORD=your_password
+     DB_NAME=dartplex
+     ```
 
-finally, start the server with nodemon
+3. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-> node server.js
-> OR
-> nodemon
+4. **Sync Database**
+   ```bash
+   node sync.js
+   ```
+
+5. **Start Server**
+   ```bash
+   npm start
+   # OR
+   nodemon server.js
+   ```
+
+## Environment Security
+- Please don't commit `.env` files
+- Keep `.env.example` updated with required variables **(but no real values)**
+- Set up environment variables on your production server
+- Use different credentials for development and production
+
+## Contributing
+1. Create a `.env` file based on `.env.example`
+2. Install dependencies
+3. Make your changes
+4. Test locally before submitting PR
