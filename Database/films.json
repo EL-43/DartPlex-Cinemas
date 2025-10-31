@@ -1,0 +1,68 @@
+[
+  {
+    "id": "drifting-home",
+    "title": "Drifting Home",
+    "poster": "/images/Testcover.jpg",
+    "genre": "Animation, Adventure",
+    "rating": "SU",
+    "duration": "1h 59m",
+    "format": "2D",
+    "trailer": "https://youtu.be/BSE2KGU5png",
+    "description": "Sejak kematian kakeknya, Yasuji, Kousuke Kumagaya menjauh dari sahabat masa kecilnya, Natsume Tonai. Mereka tumbuh seperti saudara di apartemen yang sama, namun renggang karena Natsume tak bisa melepaskan masa lalu—apalagi kompleks lama mereka akan segera dibongkar. Saat kembali ke gedung itu, Kousuke dan Natsume bertengkar soal kamera peninggalan Yasuji. Pertengkaran berakhir dengan hujan deras yang menenggelamkan area sekitar, membuat apartemen mereka hanyut di laut bersama anak-anak lain. Terputus dari dunia luar, Kousuke dan Natsume harus berdamai demi menemukan jalan pulang."
+  },
+  {
+    "id": "given-movie",
+    "title": "Given Movie: Hiiragi Mix",
+    "poster": "/images/Testcover2.jpg",
+    "genre": "Romance, Drama",
+    "rating": "R13+",
+    "duration": "1h 10m",
+    "format": "2D",
+    "trailer": "https://youtu.be/VEDQzTYJOYE",
+    "description": "Hiiragi Kashima berusaha membawa bandnya debut, tapi krisis muncul saat gitaris pendukung pergi. Ia meminta Ritsuka Uenoyama menggantikannya meski hubungan mereka sering tegang. Di sisi lain, Given juga bersiap debut. Namun Mafuyu masih ragu melangkah ke dunia profesional, sambil bergulat dengan masa lalu dan perubahan hidup yang menanti."
+  },
+  {
+    "id": "chainsaw-man",
+    "title": "Chainsaw Man the Movie: Reze Arc",
+    "poster": "/images/Testcover1.jpg",
+    "genre": "Action, Horror",
+    "rating": "D17+",
+    "duration": "1h 41m",
+    "format": "2D",
+    "trailer": "https://youtu.be/GJ1jrCnm-t8",
+    "description": "Denji, seorang remaja yang kini menjadi Chainsaw Man, mulai menemukan secercah kebahagiaan setelah bertemu Reze, seorang gadis ramah yang bekerja di kafe. Kehangatan dan perhatian Reze membuat Denji merasakan arti cinta untuk pertama kalinya, meski ia masih terikat oleh perasaan terhadap Makima. Namun, di balik senyum manisnya, Reze menyimpan rahasia berbahaya yang mengguncang hidup Denji. Ketika kenyataan itu terungkap, Denji terjebak antara cinta yang ia dambakan dan pertempuran mematikan yang menanti, menuntutnya untuk memilih antara perasaan pribadi atau takdirnya sebagai Chainsaw Man."
+  },
+  {
+    "id": "squid-game-season-3",
+    "title": "Squid Game Season 3",
+    "genre": "Action, Drama, Thriller",
+    "rating": "D17+",
+    "poster": "https://preview.redd.it/do-you-think-theres-going-to-be-a-4th-season-of-squid-game-v0-38x350osoimf1.jpeg?width=1080&crop=smart&auto=webp&s=4c35fc4f4040ab3cc828de8744593c74072d42d0",
+    "description": "Squid Game bercerita tentang sekelompok orang yang terlilit utang besar, yang berpartisipasi dalam serangkaian permainan anak-anak mematikan untuk memperebutkan hadiah uang tunai senilai 45,6 miliar won. Pemenang akan mendapatkan uang, sementara yang kalah akan kehilangan nyawa. Tokoh utama, Seong Gi-hun, memenangkan permainan di musim pertama namun merasa tidak bahagia. Musim-musim berikutnya berlanjut dengan usaha Gi-hun untuk menghentikan permainan tersebut dan mengungkap misteri di baliknya",
+    "duration": "200m",
+    "format": "IMAX",
+    "trailer": "https://youtu.be/zgGTVaG2UiQ?si=X-haAobrhSxZeOi6"
+  },
+  {
+    "id": "the-conjuring-last-rites",
+    "title": "The Conjuring Last Rites",
+    "genre": "Horror, Thriller",
+    "rating": "D17+",
+    "poster": "https://preview.redd.it/new-poster-for-the-conjuring-last-rites-v0-sk4wg09lc8gf1.jpeg?width=640&crop=smart&auto=webp&s=635d1074608c6e18ad75aaa520a31a5e821ab1eb",
+    "description": "Berdasarkan kisah nyata, The Conjuring: Last Rites menyuguhkan babak mendebarkan lainnya dari dunia sinematik The Conjuring yang ikonis. Vera Farmiga dan Patrick Wilson bersatu kembali untuk satu kasus terakhir sebagai penyelidik paranormal terkenal di kehidupan nyata, Ed dan Lorraine Warren, dalam sebuah peristiwa yang mendebarkan dan mengerikan, dalam kelanjutan kisah dari waralaba yang telah memecahkan rekor box office global.",
+    "duration": "135m",
+    "format": "IMAX",
+    "trailer": "https://youtu.be/bMgfsdYoEEo?si=Ge-l7hFYy44_uB-S"
+  },
+  {
+    "id": "detention",
+    "title": "Detention",
+    "genre": "Horror, Drama",
+    "rating": "R13+",
+    "poster": "https://m.media-amazon.com/images/M/MV5BZjE4YTQ3OTAtYzcxOS00ZWFhLWI3ZDgtM2RjNDRjZmNjMzNkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    "description": "Di Taiwan tahun 1962, seorang siswa bernama Fang dan gurunya, Pak Chang, jatuh cinta di tengah masa Teror Putih yang melarang buku-buku sensitif. Meskipun demikian, Pak Chang diam-diam membentuk kelompok belajar buku terlarang bersama guru dan muridnya.",
+    "duration": "103m",
+    "format": "3D",
+    "trailer": "https://youtu.be/e7BBxVtbFTs?si=WPI-VWkK0EbqBWt5"
+  }
+]

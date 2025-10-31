@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/addmovie.css">
+  <link rel="icon" href="/images/dartplexlogo.png" type="image/png">
+  <title>Admin | DartPlex</title>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="d-flex align-items-center p-3 navbar-custom">
+    <a href="/index" class="cinema fw-bold">DartPlex</a>
+    <div class="d-inline-flex align-items-center px-3 py-1 rounded-pill location-badge" style="color: whitesmoke;">
+      <i class="fas fa-location-dot me-2"></i>
+      <span class="fw-bold">AMBATABEK</span>
+    </div>
+    <div class="auth-buttons ms-auto">
+      <a href="/login" class="loginbutton fw-bold">Login</a>
+      <a href="/signup" class="signupbutton fw-bold rounded-pill px-3">Make an account</a>
+    </div>
+  </div>
+
+  <!-- Daftar Film -->
+  <div class="container py-4 movielist">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold" style="color: whitesmoke;">Daftar Film</h4>
+      <div>
+        <button class="signupbutton fw-bold rounded-pill px-3" onclick="window.print()">Print This Page</button>
+      </div>
+      <button 
+        class="btn btn-primary" 
+        data-bs-toggle="modal" 
+        data-bs-target="#movieModal" 
+        id="add-movie-btn">
+        <i class="fas fa-plus"></i> Tambah Film
+      </button>
+    </div>
+
+    <!-- Movie list -->
+    <div id="movie-list" class="row row-cols-1 row-cols-md-4 g-4 justify-content-center"></div>
+
+    <!-- Loading -->
+    <div id="loading-message" class="text-center my-5 d-none">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Memuat daftar film...</p>
+    </div>
+
+    <!-- Error -->
+    <div id="error-message" class="alert alert-danger text-center d-none" role="alert">
+      Gagal memuat data film. Silakan coba lagi nanti.
+    </div>
+  </div>
+
+  <!-- Add, edit, delete stuff -->
+  <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="movie-form">
+          <div class="">
+            <h5 class="modal-title ms-auto tambahfilm" id="movieModalLabel">Tambah Film</h5>
+            <button type="button" class="btnclose" data-bs-dismiss="modal">X</button>
+          </div>
+
+          <div class="modal-body">
+            <input type="hidden" id="movie-id">
+
+            <div class="mb-3">
+              <label for="title" class="form-label">Judul</label>
+              <input type="text" id="title" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="genre" class="form-label">Genre</label>
+              <input type="text" id="genre" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating</label>
+              <input type="text" id="rating" class="form-control" placeholder="R13+, D17+, dll" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="poster" class="form-label">Poster (URL)</label>
+              <input type="url" id="poster" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Deskripsi</label>
+              <textarea id="description" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="duration" class="form-label">Durasi</label>
+              <input type="text" id="duration" class="form-control" placeholder="Contoh: 120m">
+            </div>
+
+            <div class="mb-3">
+              <label for="format" class="form-label">Format</label>
+              <input type="text" id="format" class="form-control" placeholder="Contoh: 2D, 3D, IMAX">
+            </div>
+
+            <div class="mb-3">
+              <label for="trailer" class="form-label">Trailer (URL YouTube)</label>
+              <input type="url" id="trailer" class="form-control" placeholder="https://youtu.be/...">
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/js/addmovie.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

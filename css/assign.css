@@ -1,0 +1,92 @@
+body {
+  background: linear-gradient(135deg, #3f56b4 0%, #202b56 50%, #3f56b4 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+.navbar-custom {
+  position: sticky;  
+  top: 0;           
+  z-index: 1000;   
+  background-color: rgba(22, 19, 19, 0.377);
+}
+
+.cinema {
+  font-size: 30px;
+  margin-right: 60px;
+  color: rgb(252, 158, 18);
+  text-decoration: none;
+}
+
+.location-badge {
+  background-color: rgba(255, 253, 253, 0.338);
+  font-weight: bold;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.loginbutton {
+  transition: transform 0.3s ease-in-out;
+  color: whitesmoke;
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+
+.loginbutton:hover {
+  transform: scale(1.2);
+  color: rgba(245, 245, 245, 0.632);
+}
+
+.signupbutton {
+  transition: transform 0.3s ease-in-out;
+  color: white;
+  background: rgb(63, 86, 180);
+  text-decoration: none;
+  padding: 10px 24px; 
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+.signupbutton:hover {
+  background: rgba(63, 86, 180, 0.526);
+  text-decoration: none;
+  transform: scale(1.1);
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+}
+
+
+.cinema-select-card {
+    background-color: #fff;
+}
+
+.film-checkboxes {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.btn-save {
+    background-color: rgb(63, 86, 180);
+    border: none;
+}
+
+.btn-save:hover {
+    background-color: rgba(63, 86, 180, 0.526);
+}
+
+.section-title {
+    font-weight: 600;
+    color: #212529;
+}
